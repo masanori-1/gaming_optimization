@@ -26,7 +26,7 @@ PUSHD %HOMEDRIVE%%HOMEPATH%
 ECHO %CD%
 REM ------usebackqはコマンドの出力を forの対象とできる（今回だとdirコマンド)----
 REM ------/bは出力を簡潔に(時刻などは表示せずにファイル名のみ)、/sは再帰的検索、/a-dはディレクトリ対象外----
-FOR /f "usebackq delims=" %%a IN (`dir /b /s /a-d *SS.url ^|^| ECHO *ERROR*`) DO (
+FOR /f "usebackq delims=" %%a IN (`dir /b /s /a-d *ヘブンバーンズレッド.url ^|^| ECHO *ERROR*`) DO (
 	
 	REM -----DIRで対象が一個もなかった場合はエラー------
 	IF %%a==*ERROR* (
@@ -44,6 +44,9 @@ FOR /f "usebackq delims=" %%a IN (`dir /b /s /a-d *SS.url ^|^| ECHO *ERROR*`) DO
 REM =====取得したファイルを起動する=====
 REM オプションタイトルは空白にしないとアプリケーションと認識されない
 START /max "" "%object_path%"
+
+REM =====起動後の30秒待機(コマンド入力受け付けない)=====
+timeout /t 30 /nobreak
 
 endlocal
 PAUSE
