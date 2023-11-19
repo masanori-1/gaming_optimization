@@ -26,7 +26,13 @@ PUSHD %HOMEDRIVE%%HOMEPATH%
 ECHO %CD%
 REM ------usebackqはコマンドの出力を forの対象とできる（今回だとdirコマンド)----
 REM ------/bは出力を簡潔に(時刻などは表示せずにファイル名のみ)、/sは再帰的検索、/a-dはディレクトリ対象外----
-FOR /f "usebackq delims=" %%a IN (`dir /b /s /a-d *ヘブンバーンズレッド.url ^|^| ECHO *ERROR*`) DO (
+FOR /f "usebackq delims=" %%a IN (`dir /b /s /a-d *SS.url ^|^| ECHO *ERROR*`) DO (
+	
+	REM -----DIRで対象が一個もなかった場合はエラー------
+	IF %%a==*ERROR* (
+		CALL :ERROR_PATH_SERCH
+	)
+		
 	SET /a TIMES+=1
 	ECHO !TIMES!回目
 	SET object_path=%%a
@@ -42,3 +48,8 @@ START /max "" "%object_path%"
 endlocal
 PAUSE
 EXIT
+
+:ERROR_PATH_SERCH
+ECHO ERROR:起動対象のファイルが見つかりませんでした >> "%LOG_FILE_PATH%"
+ECHO PC内にファイルがあるかどうかを確認してください >> "%LOG_FILE_PATH%"
+EXIT /b
